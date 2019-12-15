@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='index.css') }}">
+    <script
+  src="https://code.jquery.com/jquery-3.4.1.min.js"
+  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+  crossorigin="anonymous"></script>
+    <title>Ninja Gold</title>
+    <script defer>
+     $('document').ready(function(){
+        $(".scrollable").scrollTop($(".scrollable")[0].scrollHeight);
+     })
+    </script>
+</head>
+<body class="container-fluid">
+    <h1 class="gold">Your Gold : {{session['gold']}}</h1>
+    <div class="forms row">
+        <form action="/get_gold" method="POST">
+            <input type="hidden" name="which_form" value="farm"/>
+            <label>Farm</label>
+            <label>Earn 0 -20 gold</label>
+            <button class="btn btn-primary" type="submit">Find Gold!</button>
+        </form>
+        <form action="/get_gold" method="POST">
+            <input type="hidden" name="which_form" value="cave"/>
+            <label>Farm</label>
+            <label>Earn 5 -10 gold</label>
+            <button  class="btn btn-primary" type="submit">Find Gold!</button>
+        </form>
+        <form action="/get_gold" method="POST">
+            <input type="hidden" name="which_form" value="house"/>
+            <label>Farm</label>
+            <label>Earn 2-5 gold</label>
+            <button class="btn btn-primary" type="submit">Find Gold!</button>
+        </form>
+        <form action="/get_gold" method="POST">
+            <input type="hidden" name="which_form" value="casino"/>
+            <label>Farm</label>
+            <label>Earn/Takes 0 - 50 gold</label>
+            <button class="btn btn-primary" type="submit">Find Gold!</button>
+        </form>
+    </div>
+  
+    <h1 class="display-4">Activities:</h1>
+    <div class="scrollable" >
+        {% for val in session['list']%}
+        <p class="{{val['class']}}">{{val['message']}}</p>
+        {% endfor %}
+    </div>
+
+    {% if session['status'] == 'won':%}
+    <h1 class="green">You won!</h1>
+    <p class="green">You accumulated 100 gold in just {{session['counter'] }} moves.You sure know how to find gold!</p>
+    <a href="/reset"><button class="btn btn-warning">Replay</button></a>
+    {% elif session['status'] == 'lost': %}
+    <h1 class="red">You lost!</h1>
+    <p class="red">Try to get 100 gold in 15 moves to win!</p>
+    <a href="/reset"><button class="btn btn-warning">Replay</button></a>
+    {% endif %}
+
+</body>
+</html>
